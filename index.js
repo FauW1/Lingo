@@ -5,7 +5,7 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 // Access your bot info from Secrets (environment variables)
 const token = process.env.TOKEN;
 // Server function
-const keepAlive = require('./bot-server'); 
+const keepAlive = require('./misc/bot-server'); 
 
 // Create a new client instance
 // Add more intents based on your needs
