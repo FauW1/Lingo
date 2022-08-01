@@ -11,7 +11,7 @@ module.exports = {
 
   async execute(interaction) { // contains the functionality of the commands  
     // bot info
-    return await interaction.reply();
+    return await interaction.reply('pong');
   },
 };
 

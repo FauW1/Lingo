@@ -1,44 +1,28 @@
-const { InteractionType } = require('discord.js');
 const tr = require('../modules/tr'); // include the tr function
 
 // FOR FLAG REACTIONS
+// https://discordjs.guide/popular-topics/reactions.html#listening-for-reactions-on-old-messages
 module.exports = {
-  name: 'interactionCreate',
-  async execute(interaction) {
-    // Not all interactions are commands, only respond if it's a command
-    if (interaction.isChatInputCommand()) {
-
-      // Get command module from client commands collection
-      const command = interaction.client.commands.get(interaction.commandName);
-
-      if (!command) return;
-
+  name: 'messageReactionAdd',
+  async execute(reaction, user) {
+    // When a reaction is received, check if the structure is partial
+    if (reaction.partial) {
+      // If the message this reaction belongs to was removed, the fetching might result in an API error which should be handled
       try {
-        await command.execute(interaction); // execute command's function
+        await reaction.fetch();
       } catch (error) {
-        console.error(error);
-        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true }); // ephemeral flag - only the user who executed the command can see it
+        console.error('Something went wrong when fetching the message:', error);
+        // Return as `reaction.message.author` may be undefined/null
+        return;
       }
     }
+    
+    // Now the message has been cached and is fully available
+    // https://stackoverflow.com/questions/53360006/detect-with-regex-if-emoji-is-country-flag
+    const reg = /[\uD83C][\uDDE6-\uDDFF][\uD83C][\uDDE6-\uDDFF]/;
+    if(!reg.test(reaction.emoji.toString())) return; // not a flag emoji
 
-    // language autocomplete
-    else if (interaction.type === InteractionType.ApplicationCommandAutocomplete) {
-      const focusedValue = interaction.options.getFocused();
-      const choices = Object.values(tr.langs);
-      const filtered = choices.filter(choice => choice.startsWith(focusedValue));
-      await interaction.respond(
-        filtered.map(choice => ({ name: choice, value: choice })),
-      );
-    }
-
-    // for context menu translations
-    else if (interaction.isMessageContextMenuCommand()) {
-      // open 15-minute window
-      await interaction.deferReply({ ephemeral: true });
-      // words to translate
-      const words = interaction.targetMessage.content || 'null';
-      // reply with results
-      return await tr(interaction, words);
-    }
+    // TODO: add flagT here
+    tr.flagT(reaction);
   },
 };

@@ -46,8 +46,48 @@ const link = new ActionRowBuilder()
       .setStyle(ButtonStyle.Link),
   );
 
+// action row asking whether use wants to translate an emoji
+const yOrN = (msg) => {
+  const msgId = msg.id; // for button custom ids
+
+  return new ActionRowBuilder()
+    .addComponents(
+      new ButtonBuilder() // yes button
+        .setCustomId('y' + msgId)
+        .setLabel('Yes')
+        .setStyle(ButtonStyle.Primary),
+      new ButtonBuilder() // no button
+        .setCustomId('n' + msgId)
+        .setLabel('No')
+        .setStyle(ButtonStyle.Secondary),
+    );
+};
+
+// to select a language
+const langSelect = (langArr, stamp) => {
+
+  const langs = langArr.map(lang => {
+    return {
+      label: lang,
+      description: lang,
+      value: lang,
+    };
+  });
+
+  const selectMenu = new SelectMenuBuilder()
+    .setCustomId(stamp)
+    .setPlaceholder(langArr[0])
+    .addOptions(langs);
+
+
+  return new ActionRowBuilder()
+    .addComponents(selectMenu);
+};
+
 // syntax: https://www.sitepoint.com/understanding-module-exports-exports-node-js/
 exports.translateEmbed = translateEmbed;
 exports.infoEmbed = infoEmbed;
 exports.helpEmbed = helpEmbed;
 exports.link = link;
+exports.yOrN = yOrN; // action row with yes or no buttons
+exports.langSelect = langSelect; // language selection
