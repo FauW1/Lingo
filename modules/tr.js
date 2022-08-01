@@ -13,7 +13,7 @@ const tr = async (interaction, words = 'null', from = undefined, to = undefined)
   // default values if undefined
   if (!from) from = 'auto';
   // try user language first, then server language, then default to english
-  if(!to) to = await db.get(interaction.user.id) || await db.get(interaction.guild.id) || 'english';
+  if (!to) to = await db.get(interaction.user.id) || await db.get(interaction.guild.id) || 'english';
 
   // clean up input
   from = from.toLowerCase(); // lower case
@@ -28,13 +28,13 @@ const tr = async (interaction, words = 'null', from = undefined, to = undefined)
   // Validate language choice
   const langs = translate.languages;
   if (!langs.isSupported(from) || !langs.isSupported(to)) return await interaction.editReply('Unsupported language(s).');
-  
+
   // results
   const translated = await translate(words, { from: from, to: to });
 
   // if from is auto, convert from to the language detected
-  if(from === 'auto') from = translate.languages[translated.from.language.iso].toLowerCase();
-  
+  if (from === 'auto') from = translate.languages[translated.from.language.iso].toLowerCase();
+
   const embed = translateEmbed(words, from, to);
   return await interaction.editReply({ content: translated.text, embeds: [embed] });
 };
@@ -90,6 +90,12 @@ const set = async (interaction, type = 's') => {
     if (!lang) lang = 'english';
     // validation
     lang = lang.toLowerCase();
+    lang.trim(); // remove whitespace before and after
+
+    // special case for Chinese
+    if (from === 'chinese') from = 'chinese (simplified)';
+    if (to === 'chinese') to = 'chinese (simplified)';
+
     if (!translate.languages.isSupported(lang)) return await interaction.editReply('Unsupported language(s).');
 
     // set language associated w server id
