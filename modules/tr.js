@@ -24,10 +24,15 @@ const tr = async (interaction, words = 'null', from = undefined, to = undefined)
       }
     }
   }
+
   // convert to lower case
   from = from.toLowerCase();
   to = to.toLowerCase();
 
+  // special case for Chinese
+  if(from === 'chinese') from = 'chinese (simplified)';
+  if(to === 'chinese') to = 'chinese (simplified)';
+  
   // Validate language choice
   const langs = translate.languages;
   if (!langs.isSupported(from) || !langs.isSupported(to)) return await interaction.editReply('Unsupported language(s).');
