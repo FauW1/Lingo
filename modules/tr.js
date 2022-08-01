@@ -9,7 +9,7 @@ const Database = require("@replit/database");
 const db = new Database();
 
 // translate + results
-const tr = async (words = 'null', from = undefined, to = undefined) => {
+const tr = async (interaction, words = 'null', from = undefined, to = undefined) => {
   if (!from) from = 'auto';
   // get default language (TODO: make less scuffed)
   if (!to) {
@@ -30,12 +30,12 @@ const tr = async (words = 'null', from = undefined, to = undefined) => {
 
   // Validate language choice
   const langs = translate.languages;
-  if (!langs.isSupported(from) || !langs.isSupported(to)) return 'Unsupported language(s).';
+  if (!langs.isSupported(from) || !langs.isSupported(to)) return await interaction.editReply('Unsupported language(s).');
 
   // results
   const translated = await translate(words, { from: from, to: to });
   const embed = translateEmbed(words, from, to);
-  return { content: translated.text, embeds: [embed] };
+  return await interaction.editReply({ content: translated.text, embeds: [embed] });
 };
 
 // supported language suggestions

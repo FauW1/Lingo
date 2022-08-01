@@ -37,7 +37,7 @@ module.exports = {
     let to = interaction.options.getString('to'); // language to translate to
 
     // reply with the results
-    return await interaction.editReply(tr(words, from, to));
+    return await tr(interaction, words, from, to);
   },
 };
 

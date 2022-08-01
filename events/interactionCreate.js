@@ -38,7 +38,7 @@ module.exports = {
       // words to translate
       const words = interaction.targetMessage.content;
       // reply with results
-      return await interaction.editReply(tr(words, from, to));
+      return await tr(interaction, words);
     }
   },
 };
