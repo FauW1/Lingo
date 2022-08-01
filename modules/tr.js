@@ -4,11 +4,11 @@
 const translate = require('@vitalets/google-translate-api');
 // embed
 const { translateEmbed } = require('../modules/embeds.js');
-
 // storing default languages
 const Database = require("@replit/database");
 const db = new Database();
 
+// translate + results
 const tr = async (words = 'null', from = undefined, to = undefined) => {
   if (!from) from = 'auto';
   // get default language (TODO: make less scuffed)
@@ -66,5 +66,35 @@ const langs = {
   'vi': 'vietnamese',
 };
 
+// default language settings
+const set = async (interaction, type = 's') => {
+  switch(type){
+    case 'u':
+      type = 'User';
+      break;
+    default:
+      type = 'Server';
+      break;
+  }
+  
+  if (interaction.options.getBoolean('rev')) {
+      // delete settings
+      await db.delete(interaction.user.id);
+      return await interaction.editReply(type + ' default language reverted to English.');
+    } else {
+    // Validate language choice
+    let lang = interaction.options.getString('lang'); // language to translate
+    if(!lang) lang = 'english';
+    // validation
+    lang = lang.toLowerCase();
+    if(!translate.languages.isSupported(lang)) return await interaction.editReply('Unsupported language(s).');
+
+    // set language associated w server id
+    await db.set(interaction.user.id, lang);
+    await interaction.editReply(type + ' language set to ' + lang);
+    }
+}
+
 module.exports = tr;
 module.exports.langs = langs; // export langs object as well
+module.exports.set = set; // settings function

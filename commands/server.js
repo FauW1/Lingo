@@ -1,12 +1,7 @@
 // permissions
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 // The slash command builder is used to build the data for your commands
-
-const translate = require('@vitalets/google-translate-api');
-
-// storing default languages
-const Database = require("@replit/database");
-const db = new Database();
+const tr = require('../modules/tr'); // include the tr module
 
 const modPerms = PermissionFlagsBits.ManageGuild; // mod permissions
 
@@ -28,22 +23,7 @@ module.exports = {
 
   async execute(interaction) { // contains the functionality of the commands
     await interaction.deferReply(); // open 15-min window
-    if (interaction.options.getBoolean('rev')) {
-      // delete settings
-      await db.delete(interaction.guild.id);
-      return await interaction.editReply('Server default language reverted to English.');
-    } else {
-    // Validate language choice
-    let lang = interaction.options.getString('lang'); // language to translate
-    if(!lang) lang = 'english';
-    // validation
-   lang = lang.toLowerCase();
-  if(!translate.languages.isSupported(lang)) return await interaction.editReply('Unsupported language(s).');
-    
-    // set language associated w server id
-    await db.set(interaction.guild.id, lang);
-    return await interaction.editReply('Server language set to ' + lang);
-    }
+    return await tr.set(interaction, 's'); // set database and give correct response
   },
 };
 

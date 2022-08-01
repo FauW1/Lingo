@@ -1,12 +1,7 @@
 // permissions
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 // The slash command builder is used to build the data for your commands
-
-const translate = require('@vitalets/google-translate-api');
-
-// storing default languages
-const Database = require("@replit/database");
-const db = new Database();
+const tr = require('../modules/tr'); // include the tr module
 
 // Export the command data as a module so you can require() it in other files
 module.exports = {
@@ -20,26 +15,11 @@ module.exports = {
         .setAutocomplete(true))
 .addBooleanOption(option =>
       option.setName('rev')
-        .setDescription('Revert server default to English.')),
+        .setDescription('Revert user default to English.')),
 
   async execute(interaction) { // contains the functionality of the commands
     await interaction.deferReply( { ephemeral: true } ); // open 15-min window
-    if (interaction.options.getBoolean('rev')) {
-      // delete settings
-      await db.delete(interaction.user.id);
-      return await interaction.editReply('User default language reverted to English.');
-    } else {
-    // Validate language choice
-    let lang = interaction.options.getString('lang'); // language to translate
-    if(!lang) lang = 'english';
-    // validation
-    lang = lang.toLowerCase();
-    if(!translate.languages.isSupported(lang)) return await interaction.editReply('Unsupported language(s).');
-
-    // set language associated w server id
-    await db.set(interaction.user.id, lang);
-    await interaction.editReply('User language set to ' + lang);
-    }
+    return await tr.set(interaction, 'u'); // set database and give correct response
   },
 };
 
