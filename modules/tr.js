@@ -3,7 +3,7 @@
 // npm i @vitalets/google-translate-api
 const translate = require('@vitalets/google-translate-api');
 // embed
-const { translateEmbed } = require('../modules/embeds.js');
+const { translateEmbed, infoEmbed } = require('../modules/embeds.js');
 // storing default languages
 const Database = require("@replit/database");
 const db = new Database();
@@ -27,7 +27,7 @@ const tr = async (words = 'null', from = undefined, to = undefined) => {
   // convert to lower case
   from = from.toLowerCase();
   to = to.toLowerCase();
-  
+
   // Validate language choice
   const langs = translate.languages;
   if (!langs.isSupported(from) || !langs.isSupported(to)) return 'Unsupported language(s).';
@@ -68,7 +68,7 @@ const langs = {
 
 // default language settings
 const set = async (interaction, type = 's') => {
-  switch(type){
+  switch (type) {
     case 'u':
       type = 'User';
       break;
@@ -76,25 +76,34 @@ const set = async (interaction, type = 's') => {
       type = 'Server';
       break;
   }
-  
+
   if (interaction.options.getBoolean('rev')) {
-      // delete settings
-      await db.delete(interaction.user.id);
-      return await interaction.editReply(type + ' default language reverted to English.');
-    } else {
+    // delete settings
+    await db.delete(interaction.user.id);
+    return await interaction.editReply(type + ' default language reverted to English.');
+  } else {
     // Validate language choice
     let lang = interaction.options.getString('lang'); // language to translate
-    if(!lang) lang = 'english';
+    if (!lang) lang = 'english';
     // validation
     lang = lang.toLowerCase();
-    if(!translate.languages.isSupported(lang)) return await interaction.editReply('Unsupported language(s).');
+    if (!translate.languages.isSupported(lang)) return await interaction.editReply('Unsupported language(s).');
 
     // set language associated w server id
     await db.set(interaction.user.id, lang);
     await interaction.editReply(type + ' language set to ' + lang);
-    }
-}
+  }
+};
 
+// Info embed
+const info = async (interaction) => {
+  const server = await db.get(interaction.guild.id) || 'null'; // server lang info
+  const user = await db.get(interaction.user.id) || 'null'; // user lang info
+  return interaction.editReply({ embeds: [infoEmbed(server, user)] });
+};
+
+// Export
 module.exports = tr;
 module.exports.langs = langs; // export langs object as well
 module.exports.set = set; // settings function
+module.exports.info = info; // info function

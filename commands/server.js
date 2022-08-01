@@ -11,6 +11,7 @@ module.exports = {
     .setName('server') // the user would type '/set' into the server
     .setDescription('Changes server default language (Defaults to English).') // this description shows up in the list of slash commands
     .setDefaultMemberPermissions(modPerms)
+    .setDMPermission(false) // cannot be used in DMs
     
     .addStringOption(option =>
       option.setName('lang')

@@ -1,13 +1,11 @@
 const { EmbedBuilder } = require('discord.js');
 
 // theme colors (TODO: edit the blue)
-const mainColor = 0xd90368;
 const mainStr = '#d90368';
-const secondaryColor = 0x07beb8;
-const secondaryStr = '#07beb8';
+const secondaryStr = '#541388';
 
 // custom signUpEmbed constructor
-function translateEmbed(words, from, to) {
+const translateEmbed = (words, from, to) => {
   return new EmbedBuilder() // used in the initial join message
     .setColor(mainStr) // theme color
     .setTitle('Original Text')
@@ -18,5 +16,17 @@ function translateEmbed(words, from, to) {
     )
 };
 
+// custom info constructor
+const infoEmbed = (serverLang, userLang) => {
+  return new EmbedBuilder() // used in the initial join message
+    .setColor(secondaryStr) // theme color
+    .setTitle('Default Languages')
+    .addFields(
+      { name: 'Server Language', value: serverLang, inline: true },
+      { name: 'User Language', value: userLang, inline: true },
+    )
+};
+
 // syntax: https://www.sitepoint.com/understanding-module-exports-exports-node-js/
 exports.translateEmbed = translateEmbed;
+exports.infoEmbed = infoEmbed;
