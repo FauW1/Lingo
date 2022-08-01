@@ -1,7 +1,7 @@
 const { InteractionType } = require('discord.js');
 const tr = require('../modules/tr'); // include the tr function
 
-// EXECUTE COMMANDS DYNAMICALLY
+// FOR FLAG REACTIONS
 module.exports = {
   name: 'interactionCreate',
   async execute(interaction) {

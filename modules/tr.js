@@ -25,14 +25,17 @@ const tr = async (interaction, words = 'null', from = undefined, to = undefined)
     }
   }
 
+  // fixing typos and stuff
   // convert to lower case
   from = from.toLowerCase();
+  from.replace(/\s+/g, '');
   to = to.toLowerCase();
+  to.replace(/\s+/g, '');
 
   // special case for Chinese
   if(from === 'chinese') from = 'chinese (simplified)';
   if(to === 'chinese') to = 'chinese (simplified)';
-  
+        
   // Validate language choice
   const langs = translate.languages;
   if (!langs.isSupported(from) || !langs.isSupported(to)) return await interaction.editReply('Unsupported language(s).');
@@ -102,8 +105,8 @@ const set = async (interaction, type = 's') => {
 
 // Info embed
 const info = async (interaction) => {
-  const server = await db.get(interaction.guild.id) || 'null'; // server lang info
-  const user = await db.get(interaction.user.id) || 'null'; // user lang info
+  const server = await db.get(interaction.guild.id) || 'english'; // server lang info
+  const user = await db.get(interaction.user.id) || 'english'; // user lang info
   return interaction.editReply({ embeds: [infoEmbed(server, user)] });
 };
 
