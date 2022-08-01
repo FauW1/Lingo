@@ -1,7 +1,7 @@
 // permissions
 const { SlashCommandBuilder } = require('discord.js');
 // The slash command builder is used to build the data for your commands
-const tr = require('../modules/tr'); // include the tr module
+const { helpEmbed, link } = require('../modules/embeds'); // include the tr module
 
 // Export the command data as a module so you can require() it in other files
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
 
   async execute(interaction) { // contains the functionality of the commands  
     // bot info
-    return await interaction.reply('pong');
+    return await interaction.reply({ embeds: [helpEmbed], components: [link] });
   },
 };
 

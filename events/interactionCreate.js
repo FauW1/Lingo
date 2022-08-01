@@ -39,6 +39,6 @@ module.exports = {
       const words = interaction.targetMessage.content || 'null';
       // reply with results
       return await tr(interaction, words);
-    } 
+    }
   },
 };
