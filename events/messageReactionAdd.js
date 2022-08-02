@@ -19,15 +19,22 @@ const tr = async (words, emoji) => {
   // use iso country code to get the language array, full name lower case
   const langArr = countries[countryCode]['languages'].map(langCode => languages[langCode].name.toLowerCase());
 
-  console.log('languages of the flag: ' + langArr);
+  // console.log('languages of the flag: ' + langArr);
   if (!langArr) return ['Country to language conversion failed.'];
 
   let res = []; // empty array
+
+  // country information
+  res.push({
+    content: `Country: **${emoji}** **${countries[countryCode]['name']}**\nLanguage(s): **${langArr}**\n\n`
+  });
+
   // translate all the languages and append to result array
   for (let lang of langArr) {
+    const ogLang = lang;
     lang = validate(lang);
-    console.log('lang: ' + lang);
-    
+    // console.log('lang: ' + lang);
+
     // if it is a valid value
     if (lang) {
       // translate
@@ -40,27 +47,29 @@ const tr = async (words, emoji) => {
         embeds: [embed(words, from, lang)],
       }
       res.push(msgObj);
+    } else {
+
+      // if not valid
+      res.push({
+        content: `**${ogLang}** is not a supported language :(`
+      });
     }
   }
-  
-  // if there is content
-  if(res.length > 0) return res; // return results
 
-  // if there is no content
-  return ['Unsupported language(s).'];
+  return res; // return the translation results
 }
 
 // button action row
-const buttonMsg = (mins) => { 
+const buttonMsg = (mins) => {
   return {
-  content: `The thread will close automatically in ${mins} minutes.`,
-  components: [new ActionRowBuilder()
-    .addComponents(
-      new ButtonBuilder()
-        .setCustomId('close')
-        .setLabel('Close')
-        .setStyle(ButtonStyle.Danger),
-    )],
+    content: `The thread will close automatically in ${mins} minutes.`,
+    components: [new ActionRowBuilder()
+      .addComponents(
+        new ButtonBuilder()
+          .setCustomId('close')
+          .setLabel('Close')
+          .setStyle(ButtonStyle.Danger),
+      )],
   };
 };
 
@@ -85,11 +94,12 @@ module.exports = {
     // check if it is a country flag
     const reg = /[\uD83C][\uDDE6-\uDDFF][\uD83C][\uDDE6-\uDDFF]/;
     if (!reg.test(reaction.emoji)) return; // if not, do nothing
-    
+
     // https://discordjs.guide/popular-topics/threads.html#thread-related-gateway-events
     // create a thread for translation
+    // console.log(await reaction.message.fetch());
     const words = reaction.message.content || 'null';
-    
+
     const thread = await reaction.message.channel.threads.create({
       name: `translate to ${reaction.emoji}`,
       autoArchiveDuration: 60, // when it'll be archived
@@ -98,18 +108,18 @@ module.exports = {
 
     // translate the words
     const translatedContent = await tr(words, reaction.emoji);
-    console.log('translated content: ' + translatedContent);
-    
+    // console.log('translated content: ' + translatedContent);
+
     // for each element in the array
     for (const t of translatedContent) {
-      console.log('msg sent: ' + t);
+      // console.log('msg sent: ' + t);
       // send the translation
       await thread.send(t);
     }
 
     // button to close thread
     const mins = 10;
-    const minsInMS = mins * 60 * 60 * 1000;
+    const minsInMS = mins * 60 * 1000;
     await thread.send(buttonMsg(mins));
 
     // collector for button with message to delete the thread
@@ -118,14 +128,27 @@ module.exports = {
 
     // when button clicked, delete the thread
     collector.on('collect', async i => {
-      await thread.delete();
+      if (i.user.id === user.id) {
+        try {
+          await thread.delete();
+        } catch {
+          // console.log('Cannot find thread.');
+        }
+      } else {
+        await i.reply({ content: `You can't close this thread.`, ephemeral: true });
+      }
     });
 
     // when time's up, delete the thread
-    collector.on('end', async i => {
-      await thread.delete();
+    collector.on('end', async collected => {
+      try {
+        await thread.delete();
+      } catch {
+        // console.log('Cannot find thread.');
+      }
     });
 
     // add the user who reacted to the thread
     await thread.members.add(user.id);
+  },
 };

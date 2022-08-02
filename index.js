@@ -12,7 +12,8 @@ const keepAlive = require('./misc/bot-server');
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, 
             GatewayIntentBits.GuildMessages,
-            GatewayIntentBits.GuildMessageReactions],
+            GatewayIntentBits.GuildMessageReactions,
+           GatewayIntentBits.MessageContent],
   partials: [Partials.Message,
              Partials.Channel,
              Partials.Reaction],
