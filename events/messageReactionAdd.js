@@ -95,11 +95,14 @@ module.exports = {
     const reg = /[\uD83C][\uDDE6-\uDDFF][\uD83C][\uDDE6-\uDDFF]/;
     if (!reg.test(reaction.emoji)) return; // if not, do nothing
 
-    // https://discordjs.guide/popular-topics/threads.html#thread-related-gateway-events
-    // create a thread for translation
-    // console.log(await reaction.message.fetch());
+    // if not a basic text channel, return (https://discord.com/developers/docs/resources/channel#channel-object-channel-types)
+    const type = reaction.message.channel.type;
+    if(type !== 0) return;
+    
     const words = reaction.message.content || 'null';
 
+    // https://discordjs.guide/popular-topics/threads.html#thread-related-gateway-events
+    // create a thread for translation
     const thread = await reaction.message.channel.threads.create({
       name: `translate to ${reaction.emoji}`,
       autoArchiveDuration: 60, // when it'll be archived
