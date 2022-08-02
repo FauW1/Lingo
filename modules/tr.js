@@ -8,6 +8,21 @@ const { translateEmbed, infoEmbed } = require('../modules/embeds.js');
 const Database = require("@replit/database");
 const db = new Database();
 
+const validate = (langInput) => {
+  langInput.toLowerCase(); // lower case
+  langInput.trim(); // remove white space before and after
+
+  // special case for Chinese
+  if (langInput === 'chinese') langInput = 'chinese (simplified)';
+  
+  // Validate language choice
+  if(translate.languages.isSupported(langInput)){
+    return langInput; // return formatted string
+  } else {
+    return; // return undefined value
+  }
+};
+
 // translate + results
 const tr = async (interaction, words = 'null', from = undefined, to = undefined) => {
   // default values if undefined
@@ -15,23 +30,18 @@ const tr = async (interaction, words = 'null', from = undefined, to = undefined)
   // try user language first, then server language, then default to english
   if (!to) to = await db.get(interaction.user.id) || await db.get(interaction.guild.id) || 'english';
 
-  // clean up input
-  from = from.toLowerCase(); // lower case
-  from.trim(); // remove white space from before and after
-  to = to.toLowerCase();
-  to.trim();
+  // validate and format the inputs
+  from = validate(from);
+  to = validate(to)
 
-  // special case for Chinese
-  if (from === 'chinese') from = 'chinese (simplified)';
-  if (to === 'chinese') to = 'chinese (simplified)';
-
-  // Validate language choice
-  const langs = translate.languages;
-  if (!langs.isSupported(from) || !langs.isSupported(to)) return await interaction.editReply('Unsupported language(s).');
+  // if values are undefined (falsy)
+  if (!from || !to) return await interaction.editReply('Unsupported language(s).');
 
   // results
   const translated = await translate(words, { from: from, to: to });
-
+  // if translation failed
+  if (!translated) return await interaction.editReply('Translation failed.');
+  
   // if from is auto, convert from to the language detected
   if (from === 'auto') from = translate.languages[translated.from.language.iso].toLowerCase();
 
@@ -86,17 +96,12 @@ const set = async (interaction, type = 's') => {
     return await interaction.editReply(type + ' default language reverted to English.');
   } else {
     // Validate language choice
-    let lang = interaction.options.getString('lang'); // language to translate
-    if (!lang) lang = 'english';
-    // validation
-    lang = lang.toLowerCase();
-    lang.trim(); // remove whitespace before and after
+    let lang = interaction.options.getString('lang'); // language to set to
+    if (!lang) lang = 'english'; // default to english
+    lang = validate(lang);// format and validate
 
-    // special case for Chinese
-    if (from === 'chinese') from = 'chinese (simplified)';
-    if (to === 'chinese') to = 'chinese (simplified)';
-
-    if (!translate.languages.isSupported(lang)) return await interaction.editReply('Unsupported language(s).');
+    // if lang is undefined (falsy)
+    if (!lang) return await interaction.editReply('Unsupported language(s).');
 
     // set language associated w server id
     await db.set(key, lang);
@@ -116,3 +121,7 @@ module.exports = tr;
 module.exports.langs = langs; // export langs object as well
 module.exports.set = set; // settings function
 module.exports.info = info; // info function
+
+// used in emoji reaction translate
+module.exports.embed = translateEmbed; // translation embed
+module.exports.validate = validate; // validate the language
