@@ -10,3 +10,15 @@ they work in every possible text channel (not news channels though), so it can m
 
   - flag translations may not work when thread limit reached 
   (POSSIBLE SOLUTIONS: send abridged versions of the translations (may be annoying))
+
+Next steps
+- FLAG CONFIG COMMAND
+  default disabled,only abridged translations allowed/threads allowed/none/channel-specifics (disable in/enable in)
+
+- REFACTOR TR
+  other language names allowed (translate inputs before processing)
+  object storing special cases (like a dictionary)
+
+- COMPLETE BOT PAGE
+
+- CATCH TR ERRORS

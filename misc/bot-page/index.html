@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- HTML + CSS tutorial: https://www.youtube.com/playlist?list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G-->
 <html lang="en">
   
   <head>
@@ -14,9 +15,9 @@
       
       <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me On Ko-Fi', '#824deb', 'Q5Q0DE6GI');kofiwidget2.draw();</script>
     </div>
-      
+    
     <br>
-    <br>
+    <hr>
     
     <div>
       <h2>Help</h2>
@@ -26,13 +27,14 @@
       <ul> 
         <li>
           <strong>/t</strong> to translate an inputted sentence
+          <br><em>Options:</em>
+        </li>
           <ol>
             <li><strong>words</strong> (required): the words to be translated.</li>
             <li><strong>from</strong>: language to translate from <em>(defaults to 'auto')</em>.</li>
             <li><strong>to</strong>: language to translate to <em>(based on whether each is specified, defaults to user default language, then server default language, then 'english')</em>.</li>
             <li><strong>pub</strong>: whether to post this translation publicly <em>(whether this message shows up only for you, or sends as a message into the channel)</em>.</li>
           </ol>
-        </li>
         <li>
           <strong>Context menu</strong> on a message to access <strong> Apps -> translate</strong>
         </li>
@@ -49,20 +51,27 @@
   
       <h3>Default Languages</h3>
       <ul>
-        <li><strong>/user</strong> to set your own default language (if no options are specified, reverts the server default to English)</li>
-          <ol>
+        <li>
+          <strong>/user</strong> to set your own default language (if no options are specified, reverts the server default to English)
+          <br><em>Options:</em>
+        </li>
+          <ul>
             <li><strong>lang</strong>: the user default language.</li>
             <li><strong>rev</strong>: whether to revert user default language to English.</li>
-          </ol>
-        <li><em><strong>/server</strong> if you have manage server permissions, use this to set the server language</em></li>
-          <ol>
+          </ul>
+        <li>
+          <em><strong>/server</strong> if you have manage server permissions, use this to set the server language</em>
+          <br><em>Options:</em>
+        </li>
+          <ul>
             <li><strong>lang</strong>: the server default language.</li>
             <li><strong>rev</strong>: whether to revert server default language to English.</li>
-          </ol>
+          </ul>
       </ul>
     </div>
-    
+
     <br>
+    <hr>
 
     <div>
       <h2>Supported Languages</h2>
