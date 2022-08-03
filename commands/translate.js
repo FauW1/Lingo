@@ -1,15 +1,6 @@
 // The slash command builder is used to build the data for your commands
 const { SlashCommandBuilder } = require('discord.js');
-
-// tutorial: https://www.youtube.com/watch?v=-Db_noqEflQ&ab_channel=reconlx
-// translator from: https://github.com/vitalets/google-translate-api#readme
-// npm i @vitalets/google-translate-api
-const translate = require('@vitalets/google-translate-api');
-// embed
-const { translateEmbed } = require('../modules/embeds.js')
-// storing default languages
-const Database = require("@replit/database");
-const db = new Database();
+const tr = require('../modules/tr'); // include the tr function
 
 // Export the command data as a module so you can require() it in other files
 module.exports = {
@@ -40,38 +31,13 @@ module.exports = {
     let pub = !interaction.options.getBoolean('pub'); // determines whether the response is ephemeral
     await interaction.deferReply({ ephemeral: pub }); // open 15-minute window for API requests
 
-    // TODO: support 5k+ words by splitting up the calls
-    let words = interaction.options.getString('words'); // sentence to translate 
-    const langs = translate.languages;
-
+    // words to translate
+    let words = interaction.options.getString('words');
     let from = interaction.options.getString('from'); // language to translate from
-    let to = interaction.options.getString('to');
-    if (!from) from = 'auto';
+    let to = interaction.options.getString('to'); // language to translate to
 
-    // get default language (TODO: make less scuffed)
-    if (!to) {
-      // try user language first
-      to = await db.get(interaction.user.id);
-      if (!to) {
-        // then try server language
-        to = await db.get(interaction.guild.id);
-        if (!to) {
-          // if all else fails, default to english
-          to = 'english';
-        }
-      }
-    }
-
-    // convert to lower case
-    from = from.toLowerCase();
-    to = to.toLowerCase();
-    // Validate language choice
-    if (!langs.isSupported(from) || !langs.isSupported(to)) return await interaction.editReply('Unsupported language(s).');
-
-    const translated = await translate(words, { from: from, to: to });
-    // results
-    const embed = translateEmbed(words, from, to);
-    return await interaction.editReply({ content: translated.text, embeds: [embed] });
+    // reply with the results
+    return await tr(interaction, words, from, to);
   },
 };
 

@@ -1,13 +1,11 @@
-const { EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 
 // theme colors (TODO: edit the blue)
-const mainColor = 0xd90368;
 const mainStr = '#d90368';
-const secondaryColor = 0x07beb8;
-const secondaryStr = '#07beb8';
+const secondaryStr = '#541388';
 
 // custom signUpEmbed constructor
-function translateEmbed(words, from, to) {
+const translateEmbed = (words, from, to) => {
   return new EmbedBuilder() // used in the initial join message
     .setColor(mainStr) // theme color
     .setTitle('Original Text')
@@ -18,5 +16,38 @@ function translateEmbed(words, from, to) {
     )
 };
 
+// custom info constructor
+const infoEmbed = (serverLang, userLang) => {
+  return new EmbedBuilder() // used in the initial join message
+    .setColor(secondaryStr) // theme color
+    .setTitle('Default Languages')
+    .addFields(
+      { name: 'Server Language', value: serverLang, inline: true },
+      { name: 'User Language', value: userLang, inline: true },
+    )
+};
+
+// Info shown for help command
+const helpEmbed = new EmbedBuilder()
+  .setColor(mainStr)
+  .setTitle('Help')
+  .setDescription('Here are the commands available for you to use. (NOTE: not all languages supported are shown as autocomplete options. There are 100+ languages supported.)')
+  .addFields(
+    { name: 'Translate', value: '1. **/t <words to translate>** <language to translate from> <language to translate to> <whether to post this translation publicly> \n2. Open the **context menu** on a message to access **apps > translate**' },
+    { name: 'Information', value: '**/i** to access default server and user languages' },
+    { name: 'Default Languages', value: '**/user** to set your own default language \n_**/server** if you have manage server permissions, use this to set the server language._' },
+  );
+// for help command
+const link = new ActionRowBuilder()
+  .addComponents(
+    new ButtonBuilder()
+      .setLabel('Bot Page')
+      .setURL('https://Lingo.faustinew1.repl.co')
+      .setStyle(ButtonStyle.Link),
+  );
+
 // syntax: https://www.sitepoint.com/understanding-module-exports-exports-node-js/
 exports.translateEmbed = translateEmbed;
+exports.infoEmbed = infoEmbed;
+exports.helpEmbed = helpEmbed;
+exports.link = link;

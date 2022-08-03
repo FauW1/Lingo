@@ -1,0 +1,24 @@
+Areas for Improvement
+- FLAG TRANSLATIONS
+they work in every possible text channel (not news channels though), so it can make threads in there, which may be annoying
+  
+  - such as a general text announcement channel where users have the perms to react to things--now they have the ability to create threads there as well 
+  (POSSIBLE SOLUTIONS: add under /server permissions for channels you can/can't use flag translations in (annoying to do with replit db); flag translation configurations: disabled by default(?)/only abridged translations allowed/threads allowed/none/channel-specifics)
+  
+  - cannot use this flag translations inside threads
+  (POSSIBLE SOLUTIONS: send special abridged thread versions of the translations, also include a close button to delete the translation message (why not this for all flag translations then? clogging up the channel?))
+
+  - flag translations may not work when thread limit reached 
+  (POSSIBLE SOLUTIONS: send abridged versions of the translations (may be annoying))
+
+Next steps
+- FLAG CONFIG COMMAND
+  default disabled,only abridged translations allowed/threads allowed/none/channel-specifics (disable in/enable in)
+
+- REFACTOR TR
+  other language names allowed (translate inputs before processing)
+  object storing special cases (like a dictionary)
+
+- COMPLETE BOT PAGE
+
+- CATCH TR ERRORS

@@ -1,7 +1,7 @@
 /*
 Run this file to register your commands after making changes!
 
-To run, type `node deploy-commands.js` in the terminal
+To run, type `node cmd dep` into the terminal
 */
 
 // Require necessary modules, APIs, and variables
@@ -15,7 +15,7 @@ const guildId = process.env.GUILD_ID;
 
 // Create an array of all the commands
 const commands = [];
-const commandsPath = path.join(__dirname, 'commands');
+const commandsPath = path.join(__dirname, '..', 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
