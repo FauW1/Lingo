@@ -31,7 +31,7 @@ const infoEmbed = (serverLang, userLang) => {
 const helpEmbed = new EmbedBuilder()
   .setColor(mainStr)
   .setTitle('Help')
-  .setDescription('Here are the commands available for you to use')
+  .setDescription('Here are the commands available for you to use. (NOTE: not all languages supported are shown as autocomplete options. There are 100+ languages supported.)')
   .addFields(
     { name: 'Translate', value: '1. **/t <words to translate>** <language to translate from> <language to translate to> <whether to post this translation publicly> \n2. Open the **context menu** on a message to access **apps > translate**' },
     { name: 'Information', value: '**/i** to access default server and user languages' },

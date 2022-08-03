@@ -11,7 +11,7 @@ const server = express();
 
 // Responds to all HTTP requests
 server.all('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'bot-page.html')); // use bot page instead; edit based on https://www.digitalocean.com/community/tutorials/use-expressjs-to-deliver-html-files (IT WORKS AAAAAAAAA)
+  res.sendFile(path.join(__dirname, 'bot-page', 'index.html')); // use bot page instead; edit based on https://www.digitalocean.com/community/tutorials/use-expressjs-to-deliver-html-files (IT WORKS AAAAAAAAA)
 })
 
 // Keeps repl.it instance alive

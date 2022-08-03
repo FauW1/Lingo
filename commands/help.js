@@ -11,7 +11,7 @@ module.exports = {
 
   async execute(interaction) { // contains the functionality of the commands  
     // bot info
-    return await interaction.reply({ embeds: [helpEmbed], components: [link] });
+    return await interaction.reply({ embeds: [helpEmbed], components: [link], ephemeral: true });
   },
 };
 

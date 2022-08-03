@@ -12,8 +12,10 @@ const validate = (langInput) => {
   langInput.toLowerCase(); // lower case
   langInput.trim(); // remove white space before and after
 
-  // special case for Chinese
+  // special cases
   if (langInput === 'chinese') langInput = 'chinese (simplified)';
+  if (langInput === 'kurdish' || langInput === 'kurmanji') langInput = 'kurdish (kurmanji)';
+  if (langInput === 'myanmar' || langInput === 'burmese') langInput = 'myanmar (burmese)';
   
   // Validate language choice
   if(translate.languages.isSupported(langInput)){
