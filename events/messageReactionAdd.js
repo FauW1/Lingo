@@ -10,53 +10,57 @@ const { flagToCountry } = require('emoji-flags-to-country');
 
 const { embed, validate } = require('../modules/tr');
 
+// database
+const Database = require("@replit/database");
+const db = new Database();
+
 // for translating
 const tr = async (words, emoji) => {
   try {
     // iso country code
     const countryCode = flagToCountry(emoji);
     if (!countryCode) return ['Flag to country conversion failed.']; // if undefined
-  
+
     // use iso country code to get the language array, full name lower case
     const langArr = countries[countryCode]['languages'].map(langCode => languages[langCode].name.toLowerCase());
-  
+
     // console.log('languages of the flag: ' + langArr);
     if (!langArr) return ['Country to language conversion failed.'];
-  
+
     let res = []; // empty array
-  
+
     // country information
     res.push({
       content: `Country: **${emoji}** **${countries[countryCode]['name']}**\nLanguage(s): **${langArr}**\n\n`
     });
-  
+
     // translate all the languages and append to result array
     for (let lang of langArr) {
       const ogLang = lang;
       lang = await validate(lang);
       // console.log('lang: ' + lang);
-  
+
       // if it is a valid value
       if (lang) {
         // translate
         const translated = await translate(words, { to: lang });
         // language that was autodetected
         const from = translate.languages[translated.from.language.iso].toLowerCase();
-  
+
         const msgObj = {
           content: translated.text,
           embeds: [embed(words, from, lang)],
         }
         res.push(msgObj);
       } else {
-  
+
         // if not valid
         res.push({
           content: `**${ogLang}** is not a supported language :(`
         });
       }
     }
-  
+
     return res; // return the translation results
   }
 
@@ -97,6 +101,13 @@ module.exports = {
       }
     }
 
+    // check if flag translations are enabled
+    // key = f<guild ID>
+    const key = 'f' + reaction.message.guildId;
+    const enabled = await db.get(key);
+
+    if (!enabled) return; // if flag reactions not enabled, return
+
     // Now the message has been cached and is fully available
     // check if it is a country flag
     const reg = /[\uD83C][\uDDE6-\uDDFF][\uD83C][\uDDE6-\uDDFF]/;
@@ -104,8 +115,8 @@ module.exports = {
 
     // if not a basic text channel, return (https://discord.com/developers/docs/resources/channel#channel-object-channel-types)
     const type = reaction.message.channel.type;
-    if(type !== 0) return;
-    
+    if (type !== 0) return;
+
     const words = reaction.message.content || 'null';
 
     // https://discordjs.guide/popular-topics/threads.html#thread-related-gateway-events

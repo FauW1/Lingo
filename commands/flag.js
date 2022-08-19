@@ -1,9 +1,9 @@
-// permissions
+// ENABLE AND DISABLE FLAG TRANSLATIONS
 const { SlashCommandBuilder } = require('discord.js');
 // The slash command builder is used to build the data for your commands
 const { helpEmbed, link } = require('../modules/embeds'); // include the tr module
 const Database = require("@replit/database");
-
+const db = new Database();
 
 // Export the command data as a module so you can require() it in other files
 module.exports = {
@@ -12,17 +12,21 @@ module.exports = {
     .setDescription('Toggle flag translation availability.'),
 
   async execute(interaction) { // contains the functionality of the commands
-    const flagCode = 'f';
-    // key: f<guild ID>
-    const key = flagCode + interaction.guild.id;
+    await interaction.deferReply({ ephemeral: true }); // open 15min window
 
-    const currVal = db.get(key); // get existing val (if it is there)
+    // key: f<guild ID>
+    const key = 'f' + interaction.guild.id;
+
+    const currVal = await db.get(key); // get existing val (if it is there)
     if (!currVal) currVal = false; // if falsy, set to false
 
-    const newVal = db.set(key, !currVal); // set to the opposite of currVal
+    const newVal = await db.set(key, !currVal); // set to the opposite of currVal
+    if (!newVal) await db.delete(key); // if false, just delete the key entirely
     
-    // bot info
-    return await interaction.reply({ embeds: [helpEmbed], components: [link], ephemeral: true });
+    const replyVal = newVal ? 'enabled' : 'disabled'; // value to reply with
+
+      // bot info
+      return await interaction.reply(`Flag translations now ${replyVal}.`);
   },
 };
 
