@@ -1,3 +1,4 @@
+// SET SERVER LANGUAGE (PUBLIC REPLY)
 // permissions
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 // The slash command builder is used to build the data for your commands
@@ -12,7 +13,7 @@ module.exports = {
     .setDescription('Changes server default language (Defaults to English).') // this description shows up in the list of slash commands
     .setDefaultMemberPermissions(modPerms)
     .setDMPermission(false) // cannot be used in DMs
-    
+
     .addStringOption(option =>
       option.setName('lang')
         .setDescription("Default server language.")

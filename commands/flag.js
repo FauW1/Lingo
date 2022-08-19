@@ -1,4 +1,4 @@
-// ENABLE AND DISABLE FLAG TRANSLATIONS
+// ENABLE AND DISABLE FLAG TRANSLATIONS (PUBLIC REPLY)
 const { SlashCommandBuilder } = require('discord.js');
 // The slash command builder is used to build the data for your commands
 const Database = require("@replit/database");
@@ -11,7 +11,7 @@ module.exports = {
     .setDescription('Toggle flag translation availability.'),
 
   async execute(interaction) { // contains the functionality of the commands
-    await interaction.deferReply({ ephemeral: true }); // open 15min window
+    await interaction.deferReply(); // open 15min window
 
     // key: f<guild ID>
     const key = 'f' + interaction.guild.id;
@@ -26,8 +26,6 @@ module.exports = {
 
     const replyVal = newVal ? 'enabled' : 'disabled'; // value to reply with
 
-    console.log(`currVal is ${currVal}`);
-    console.log(`newVal is ${newVal}`);
     // bot info
     return await interaction.editReply(`Flag translations now ${replyVal}.`);
   },

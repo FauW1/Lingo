@@ -20,7 +20,7 @@ module.exports = {
     .addStringOption(option =>
       option.setName('to')
         .setDescription("To what language (if not specified, default language)")
-        .setAutocomplete(true)) // TODO: complete in interactionCreate
+        .setAutocomplete(true))
 
     .addBooleanOption(option =>
       option.setName('pub')
