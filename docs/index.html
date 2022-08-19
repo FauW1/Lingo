@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<!-- HTML + CSS tutorial: https://www.youtube.com/playlist?list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G-->
+<html lang="en">
+
+<head>
+  <title>Lingo🍎</title>
+  <meta charset='UTF-8'> <!-- so that odd chars show up -->
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+
+  <!-- linking to styles.css doesn't work... -->
+  <style>
+    body {
+      background-color: #F1E9DA;
+      color: #2e294e;
+      font-family: verdana;
+      margin: 0;
+      padding: 0;
+      line-height: 2em;
+    }
+
+    main {
+      text-align: center;
+    }
+
+    .buttons {
+      list-style-type: none;
+    }
+
+    .buttons .button {
+      display: inline-block;
+      background-color: #d90368;
+      border: 8px solid #d90368;
+      border-radius: 50px;
+      margin: 5px;
+    }
+
+    .buttons .button a {
+      text-decoration: none;
+      font-size: 1.4em;
+      font-weight: normal;
+      color: #f2f0eb;
+      display: inline-block;
+      padding: 20px;
+    }
+
+    a {
+      color: #d90368;
+      font-weight: bold;
+    }
+
+    strong {
+      color: #d90368;
+    }
+
+    .pfp {
+      max-width: 100px;
+      width: 20%;
+      border-radius: 50%;
+      /* makes image a circle */
+    }
+
+    header {
+      text-align: center;
+      background-color: #541388;
+      display: block;
+      margin: 0 0;
+      padding: 0.2em;
+      position: sticky;
+      top: 0;
+      z-index: 15;
+    }
+
+    header h3 a {
+      text-decoration: none;
+      color: #f2f0eb;
+    }
+
+    article {
+      margin: 20px;
+    }
+
+
+    #main {
+      padding-top: 100px;
+      margin-top: -100px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    /* pseudo classes */
+    .buttons .button:hover {
+      position: relative;
+      top: -4px;
+      /* move up a little bit*/
+      background-color: #541388;
+      border: 8px solid #541388;
+      color: #f2f0eb;
+    }
+
+    a:visited {
+      color: #541388;
+    }
+
+    header h3 a:visited {
+      color: #f2f0eb;
+    }
+
+    /* carousel without javascript styling, from: https://codepen.io/SitePoint/pen/MyPVdK*/
+    .carousel {
+        position: relative;
+        margin: 26px 0px;
+    }
+    
+    .carousel-inner {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+    }
+    
+    .carousel-open:checked + .carousel-item {
+        position: static;
+        opacity: 100;
+    }
+    
+    .carousel-item {
+        position: absolute;
+        opacity: 0;
+        -webkit-transition: opacity 0.6s ease-out;
+        transition: opacity 0.6s ease-out;
+    }
+    
+    .carousel-item img {
+        display: block;
+        height: auto;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .carousel-control {
+        background: rgba(0, 0, 0, 0.28);
+        border-radius: 50%;
+        color: #fff;
+        cursor: pointer;
+        display: none;
+        font-size: 40px;
+        height: 40px;
+        line-height: 35px;
+        position: absolute;
+        top: 50%;
+        -webkit-transform: translate(0, -50%);
+        cursor: pointer;
+        -ms-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+        text-align: center;
+        width: 40px;
+        z-index: 10;
+    }
+    
+    .carousel-control.prev {
+        left: 2%;
+    }
+    
+    .carousel-control.next {
+        right: 2%;
+    }
+    
+    .carousel-control:hover {
+        background: rgba(0, 0, 0, 0.8);
+        color: #aaaaaa;
+    }
+    
+    #carousel-1:checked ~ .control-1,
+    #carousel-2:checked ~ .control-2,
+    #carousel-3:checked ~ .control-3 {
+        display: block;
+    }
+    
+    .carousel-indicators {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        bottom: 2%;
+        left: 0;
+        right: 0;
+        text-align: center;
+        z-index: 10;
+    }
+    
+    .carousel-indicators li {
+        display: inline-block;
+        margin: 0 5px;
+    }
+    
+    .carousel-bullet {
+        color: #fff;
+        cursor: pointer;
+        display: block;
+        font-size: 35px;
+    }
+    
+    .carousel-bullet:hover {
+        color: #aaaaaa;
+    }
+    
+    #carousel-1:checked ~ .control-1 ~ .carousel-indicators li:nth-child(1) .carousel-bullet,
+    #carousel-2:checked ~ .control-2 ~ .carousel-indicators li:nth-child(2) .carousel-bullet,
+    #carousel-3:checked ~ .control-3 ~ .carousel-indicators li:nth-child(3) .carousel-bullet {
+        color: #428bca;
+    }
+    
+    #title {
+        width: 100%;
+        position: absolute;
+        padding: 0px;
+        margin: 0px auto;
+        text-align: center;
+        font-size: 27px;
+        color: rgba(255, 255, 255, 1);
+        font-family: 'Open Sans', sans-serif;
+        z-index: 9999;
+        text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.33), -1px 0px 2px rgba(255, 255, 255, 0);
+    }
+  </style>
+
+</head>
+
+<body>
+  <header>
+    <h3><a href='#main'>Lingo🍎</a></h3>
+  </header>
+
+  <main id='main'>
+    <h1><img src='https://i.imgur.com/O4V6iDt.png' class='pfp'> Lingo🍎 is running!</h1>
+
+    <p>Hi! With me, you can use Google Translate in Discord directly. Enjoy!</p>
+    <p>Developed by Fawntune.</p>
+
+    <ul class='buttons'>
+      <!-- blank target -> new tab -->
+      <div class='button'><a
+          href='https://discord.com/api/oauth2/authorize?client_id=1002811296187682817&permissions=466004339776&scope=bot%20applications.commands'
+          target='_blank'>Invite Lingo🍎</a></div>
+      <div class='button'><a href='https://ko-fi.com/fawntune' target='_blank'>Support Me On Ko-Fi</a></div>
+    </ul>
+  </main>
+
+  <br>
+  <hr>
+
+  <article>
+    <h1 id='help'>Help</h1>
+    <p>Here are some ways you can interact with the bot! Not all <a href='#languages'>languages supported</a> are shown
+      as autocomplete options while typing commands. The maximum number of characters allowed in each translation is
+      <strong>4096</strong> characters.
+    </p>
+
+    <h2>Translate</h2>
+    <ul>
+      <li>
+        <strong>/t</strong> to translate an inputted sentence
+        <br><em>Options:</em>
+      </li>
+      <ol>
+        <li><strong>words</strong> (required): the words to be translated.</li>
+        <li><strong>from</strong>: language to translate from <em>(defaults to 'auto')</em>.</li>
+        <li><strong>to</strong>: language to translate to <em>(based on whether each is specified, defaults to user
+            default language, then server default language, then 'english')</em>.</li>
+        <li><strong>pub</strong>: whether to post this translation publicly <em>(whether this message shows up only for
+            you, or sends as a message into the channel)</em>.</li>
+      </ol>
+      <li>
+        <strong>Context menu</strong> on a message to access <strong> Apps -> translate</strong>
+      </li>
+      <li>
+        (If enabled) <strong>react</strong> to a message with a <a href='https://emojipedia.org/flags/' target='_blank'>Flag
+          Emoji</a> to translate the message to languages used in that country.
+      </li>
+    </ul>
+
+    <h2>Information and Help</h2>
+    <ul>
+      <li><strong>/i</strong> to access default server and user languages</li>
+      <li><strong>/help</strong> to see a short list of available commands and a link to the bot page</li>
+    </ul>
+
+    <h2>Default Languages</h2>
+    <ul>
+      <li>
+        <strong>/user</strong> to set your own default language (if no options are specified, reverts the server default
+        to English)
+        <br><em>Options:</em>
+      </li>
+      <ul>
+        <li><strong>lang</strong>: the user default language.</li>
+        <li><strong>rev</strong>: whether to revert user default language to English.</li>
+      </ul>
+      <li>
+        <em><strong>/server</strong> if you have manage server permissions, use this to set the server language</em>
+        <br><em>Options:</em>
+      </li>
+      <ul>
+        <li><strong>lang</strong>: the server default language.</li>
+        <li><strong>rev</strong>: whether to revert server default language to English.</li>
+      </ul>
+      <li>
+        <em><strong>/flag</strong> if you have manage server permissions, use this to toggle flag translations, <strong>off by default</strong></em>
+        <br><em>Options:</em>
+      </li>
+      <ul>
+        <li><strong>(no option selected)</strong>: toggle flag translations on and off.</li>
+        <li><strong>short</strong>: toggle short translations on and off.</li>
+      </ul>
+    </ul>
+  </article>
+
+   <!-- carousel, without javascript, source: https://codepen.io/SitePoint/pen/MyPVdK -->
+    <div class="carousel">
+      <div class="carousel-inner">
+            <input class="carousel-open" type="radio" id="carousel-1" name="carousel" aria-hidden="true" hidden="" checked="checked">
+            <div class="carousel-item">
+                <img src="https://i.imgur.com/oP6pUBD.png">
+            </div>
+            <input class="carousel-open" type="radio" id="carousel-2" name="carousel" aria-hidden="true" hidden="">
+            <div class="carousel-item">
+                <img src="https://i.imgur.com/uFlFnt1.png">
+            </div>
+            <input class="carousel-open" type="radio" id="carousel-3" name="carousel" aria-hidden="true" hidden="">
+            <div class="carousel-item">
+                <img src="https://i.imgur.com/FO63hyq.png">
+            </div>
+            <label for="carousel-3" class="carousel-control prev control-1">‹</label>
+            <label for="carousel-2" class="carousel-control next control-1">›</label>
+            <label for="carousel-1" class="carousel-control prev control-2">‹</label>
+            <label for="carousel-3" class="carousel-control next control-2">›</label>
+            <label for="carousel-2" class="carousel-control prev control-3">‹</label>
+            <label for="carousel-1" class="carousel-control next control-3">›</label>
+            <ol class="carousel-indicators">
+                <li>
+                    <label for="carousel-1" class="carousel-bullet">•</label>
+                </li>
+                <li>
+                    <label for="carousel-2" class="carousel-bullet">•</label>
+                </li>
+                <li>
+                    <label for="carousel-3" class="carousel-bullet">•</label>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+  <br>
+  <hr>
+
+  <article>
+    <h1 id='languages'>Supported Languages</h1>
+    <p>These are the supported languages and allowed inputs for the commands.</p>
+    <p>
+      'auto': 'Automatic' (auto-detects language),
+      'af': 'Afrikaans',
+      'sq': 'Albanian',
+      'am': 'Amharic',
+      'ar': 'Arabic',
+      'hy': 'Armenian',
+      'az': 'Azerbaijani',
+      'eu': 'Basque',
+      'be': 'Belarusian',
+      'bn': 'Bengali',
+      'bs': 'Bosnian',
+      'bg': 'Bulgarian',
+      'ca': 'Catalan',
+      'ceb': 'Cebuano',
+      'ny': 'Chichewa',
+      'zh-CN': 'Chinese (Simplified)',
+      'zh-TW': 'Chinese (Traditional)',
+      'co': 'Corsican',
+      'hr': 'Croatian',
+      'cs': 'Czech',
+      'da': 'Danish',
+      'nl': 'Dutch',
+      'en': 'English',
+      'eo': 'Esperanto',
+      'et': 'Estonian',
+      'tl': 'Filipino',
+      'fi': 'Finnish',
+      'fr': 'French',
+      'fy': 'Frisian',
+      'gl': 'Galician',
+      'ka': 'Georgian',
+      'de': 'German',
+      'el': 'Greek',
+      'gu': 'Gujarati',
+      'ht': 'Haitian Creole',
+      'ha': 'Hausa',
+      'haw': 'Hawaiian',
+      'he': 'Hebrew',
+      'iw': 'Hebrew',
+      'hi': 'Hindi',
+      'hmn': 'Hmong',
+      'hu': 'Hungarian',
+      'is': 'Icelandic',
+      'ig': 'Igbo',
+      'id': 'Indonesian',
+      'ga': 'Irish',
+      'it': 'Italian',
+      'ja': 'Japanese',
+      'jw': 'Javanese',
+      'kn': 'Kannada',
+      'kk': 'Kazakh',
+      'km': 'Khmer',
+      'ko': 'Korean',
+      'ku': 'Kurdish (Kurmanji)',
+      'ky': 'Kyrgyz',
+      'lo': 'Lao',
+      'la': 'Latin',
+      'lv': 'Latvian',
+      'lt': 'Lithuanian',
+      'lb': 'Luxembourgish',
+      'mk': 'Macedonian',
+      'mg': 'Malagasy',
+      'ms': 'Malay',
+      'ml': 'Malayalam',
+      'mt': 'Maltese',
+      'mi': 'Maori',
+      'mr': 'Marathi',
+      'mn': 'Mongolian',
+      'my': 'Myanmar (Burmese)',
+      'ne': 'Nepali',
+      'no': 'Norwegian',
+      'ps': 'Pashto',
+      'fa': 'Persian',
+      'pl': 'Polish',
+      'pt': 'Portuguese',
+      'pa': 'Punjabi',
+      'ro': 'Romanian',
+      'ru': 'Russian',
+      'sm': 'Samoan',
+      'gd': 'Scots Gaelic',
+      'sr': 'Serbian',
+      'st': 'Sesotho',
+      'sn': 'Shona',
+      'sd': 'Sindhi',
+      'si': 'Sinhala',
+      'sk': 'Slovak',
+      'sl': 'Slovenian',
+      'so': 'Somali',
+      'es': 'Spanish',
+      'su': 'Sundanese',
+      'sw': 'Swahili',
+      'sv': 'Swedish',
+      'tg': 'Tajik',
+      'ta': 'Tamil',
+      'te': 'Telugu',
+      'th': 'Thai',
+      'tr': 'Turkish',
+      'uk': 'Ukrainian',
+      'ur': 'Urdu',
+      'uz': 'Uzbek',
+      'vi': 'Vietnamese',
+      'cy': 'Welsh',
+      'xh': 'Xhosa',
+      'yi': 'Yiddish',
+      'yo': 'Yoruba',
+      'zu': 'Zulu'
+    </p>
+    </artice>
+
+</body>
+
+</html>

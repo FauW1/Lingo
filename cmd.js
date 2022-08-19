@@ -2,9 +2,17 @@
 const myArgs = process.argv.slice(2); // get argument from command line
 const path = './misc/'; // path where the commands are stored
 
+
+const testBlock = async () => {
+  const Database = require("@replit/database"); 
+  const db = new Database();
+  const keys = await db.list();
+  console.log(keys);
+}
+
 // deploy or delete commands based on input
 switch (myArgs[0]) {
-  
+
   // delete commands
   case 'del':
     switch (myArgs[1]) {
@@ -18,8 +26,8 @@ switch (myArgs[0]) {
         break;
     }
     break;
-    
-   // delete commands
+
+  // delete commands
   case 'dep':
     switch (myArgs[1]) {
       // delete global commands
@@ -32,7 +40,11 @@ switch (myArgs[0]) {
         break;
     }
     break;
-    
+
+  case 't':
+    testBlock();
+    break;
+
   default:
     console.log('Invalid arg');
     break;
