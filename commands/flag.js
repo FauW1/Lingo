@@ -1,7 +1,6 @@
 // ENABLE AND DISABLE FLAG TRANSLATIONS
 const { SlashCommandBuilder } = require('discord.js');
 // The slash command builder is used to build the data for your commands
-const { helpEmbed, link } = require('../modules/embeds'); // include the tr module
 const Database = require("@replit/database");
 const db = new Database();
 
@@ -17,16 +16,20 @@ module.exports = {
     // key: f<guild ID>
     const key = 'f' + interaction.guild.id;
 
-    const currVal = await db.get(key); // get existing val (if it is there)
+    let currVal = await db.get(key); // get existing val (if it is there)
     if (!currVal) currVal = false; // if falsy, set to false
 
-    const newVal = await db.set(key, !currVal); // set to the opposite of currVal
+    const newVal = !currVal;
+    await db.set(key, newVal); // set to the opposite of currVal
+
     if (!newVal) await db.delete(key); // if false, just delete the key entirely
-    
+
     const replyVal = newVal ? 'enabled' : 'disabled'; // value to reply with
 
-      // bot info
-      return await interaction.reply(`Flag translations now ${replyVal}.`);
+    console.log(`currVal is ${currVal}`);
+    console.log(`newVal is ${newVal}`);
+    // bot info
+    return await interaction.editReply(`Flag translations now ${replyVal}.`);
   },
 };
 
