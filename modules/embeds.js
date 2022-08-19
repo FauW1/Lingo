@@ -5,8 +5,8 @@ const mainStr = '#d90368';
 const secondaryStr = '#541388';
 
 // custom signUpEmbed constructor
-const translateEmbed = (words, from, to, tObj) => {
-  let embed = new EmbedBuilder() // used in the initial join message
+const translateEmbed = (words, from, to) => {
+  return new EmbedBuilder() // used in the initial join message
     .setColor(mainStr) // theme color
     .setTitle('Original Text')
     .setDescription(words)
@@ -14,17 +14,6 @@ const translateEmbed = (words, from, to, tObj) => {
       { name: 'From', value: from, inline: true },
       { name: 'To', value: to, inline: true },
     )
-  
-  // autocorrect and didyoumean booleans from the translated object (given by the API)
-  const autoCorrected = tObj.from.text.autoCorrected;
-  const dym = tObj.from.text.didYouMean;
-  if (autoCorrected) { // if autocorrected
-    embed.addField( {name: 'Autocorrected to:', value: tObj.from.text.value} ); // the text it autocorrected to
-  } else if (dym) {
-    embed.addField( {name: 'Did you mean:', value: tObj.from.text.value} ); // the text it suggested
-  }
-
-  return embed;
 };
 
 // custom info constructor
