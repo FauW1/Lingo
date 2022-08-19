@@ -1,8 +1,10 @@
 // ENABLE AND DISABLE FLAG TRANSLATIONS
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 // The slash command builder is used to build the data for your commands
 const Database = require("@replit/database");
 const db = new Database();
+
+const modPerms = PermissionFlagsBits.ManageGuild; // mod permissions
 
 // for settings
 const settings = async (code, id) => {
@@ -24,6 +26,7 @@ module.exports = {
   data: new SlashCommandBuilder() // this is used to build a slash command
     .setName('flag') // the user would type '/set' into the server
     .setDescription('Toggle flag translation availability.')
+    .setDefaultMemberPermissions(modPerms)
 
     .addBooleanOption(
       option =>
