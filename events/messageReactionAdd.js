@@ -12,51 +12,58 @@ const { embed, validate } = require('../modules/tr');
 
 // for translating
 const tr = async (words, emoji) => {
-  // iso country code
-  const countryCode = flagToCountry(emoji);
-  if (!countryCode) return ['Flag to country conversion failed.']; // if undefined
-
-  // use iso country code to get the language array, full name lower case
-  const langArr = countries[countryCode]['languages'].map(langCode => languages[langCode].name.toLowerCase());
-
-  // console.log('languages of the flag: ' + langArr);
-  if (!langArr) return ['Country to language conversion failed.'];
-
-  let res = []; // empty array
-
-  // country information
-  res.push({
-    content: `Country: **${emoji}** **${countries[countryCode]['name']}**\nLanguage(s): **${langArr}**\n\n`
-  });
-
-  // translate all the languages and append to result array
-  for (let lang of langArr) {
-    const ogLang = lang;
-    lang = validate(lang);
-    // console.log('lang: ' + lang);
-
-    // if it is a valid value
-    if (lang) {
-      // translate
-      const translated = await translate(words, { to: lang });
-      // language that was autodetected
-      const from = translate.languages[translated.from.language.iso].toLowerCase();
-
-      const msgObj = {
-        content: translated.text,
-        embeds: [embed(words, from, lang)],
+  try {
+    // iso country code
+    const countryCode = flagToCountry(emoji);
+    if (!countryCode) return ['Flag to country conversion failed.']; // if undefined
+  
+    // use iso country code to get the language array, full name lower case
+    const langArr = countries[countryCode]['languages'].map(langCode => languages[langCode].name.toLowerCase());
+  
+    // console.log('languages of the flag: ' + langArr);
+    if (!langArr) return ['Country to language conversion failed.'];
+  
+    let res = []; // empty array
+  
+    // country information
+    res.push({
+      content: `Country: **${emoji}** **${countries[countryCode]['name']}**\nLanguage(s): **${langArr}**\n\n`
+    });
+  
+    // translate all the languages and append to result array
+    for (let lang of langArr) {
+      const ogLang = lang;
+      lang = await validate(lang);
+      // console.log('lang: ' + lang);
+  
+      // if it is a valid value
+      if (lang) {
+        // translate
+        const translated = await translate(words, { to: lang });
+        // language that was autodetected
+        const from = translate.languages[translated.from.language.iso].toLowerCase();
+  
+        const msgObj = {
+          content: translated.text,
+          embeds: [embed(words, from, lang)],
+        }
+        res.push(msgObj);
+      } else {
+  
+        // if not valid
+        res.push({
+          content: `**${ogLang}** is not a supported language :(`
+        });
       }
-      res.push(msgObj);
-    } else {
-
-      // if not valid
-      res.push({
-        content: `**${ogLang}** is not a supported language :(`
-      });
     }
+  
+    return res; // return the translation results
   }
 
-  return res; // return the translation results
+  // if any errors occurred
+  catch {
+    return ['An error occurred while translating.'];
+  }
 }
 
 // button action row

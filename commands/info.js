@@ -11,7 +11,7 @@ module.exports = {
     .setDMPermission(false), // cannot be used in DMs
 
   async execute(interaction) { // contains the functionality of the commands
-    await interaction.deferReply(); // open 15-min window
+    await interaction.deferReply({ ephemeral: true }); // open 15-min window
     return await tr.info(interaction); // default languages displayed
   },
 };
