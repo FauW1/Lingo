@@ -28,16 +28,16 @@ const validate = async (langInput) => {
   // console.log('lang input found: ' + langInput);
   if(!langInput) return; // if it failed, return
   */
-  
+
   langInput = langInput.toLowerCase(); // lower case
   langInput = langInput.trim(); // remove white space before and after
   // console.log('final lang input: ' + langInput);
 
   // if langinput is a special case
-  if(specialCases[langInput]) langInput = specialCases[langInput];
-  
+  if (specialCases[langInput]) langInput = specialCases[langInput];
+
   // Validate language choice
-  if(translate.languages.isSupported(langInput)){
+  if (translate.languages.isSupported(langInput)) {
     return langInput; // return formatted string
   } else {
     return; // return undefined value
@@ -51,26 +51,25 @@ const tr = async (interaction, words = 'null', from = undefined, to = undefined)
     if (!from) from = 'auto';
     // try user language first, then server language, then default to english
     if (!to) to = await db.get(interaction.user.id) || await db.get(interaction.guild.id) || 'english';
-  
+
     // validate and format the inputs
     from = await validate(from);
     to = await validate(to)
-  
+
     // if values are undefined (falsy)
     if (!from || !to) return await interaction.editReply('Unsupported language(s).');
-  
+
     // results
     const translated = await translate(words, { from: from, to: to });
     // if translation failed
     if (!translated) return await interaction.editReply('Translation failed.');
-    
+
     // if from is auto, convert from to the language detected
     if (from === 'auto') from = translate.languages[translated.from.language.iso].toLowerCase();
-  
+
     const embed = translateEmbed(words, from, to);
     return await interaction.editReply({ content: translated.text, embeds: [embed] });
-  
-  } 
+  }
   // if any unexpected error arises
   catch {
     return await interaction.editReply('An error occurred while translating.');
@@ -132,7 +131,11 @@ const set = async (interaction, type = 's') => {
     if (!lang) return await interaction.editReply('Unsupported language(s).');
 
     // set language associated w server id
-    await db.set(key, lang);
+    if (lang == 'english') {
+      await db.delete(key) // if english, remove the key
+    } else { // if any other language, set to that language
+      await db.set(key, lang);
+    }
     await interaction.editReply(type + ' language set to ' + lang);
   }
 };
