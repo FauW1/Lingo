@@ -16,6 +16,7 @@ const specialCases = {
   'myanmar': 'myanmar (burmese)',
   'burmese': 'myanmar (burmese)',
   'farsi': 'persian',
+  'nyanja': 'chichewa',
 };
 
 // MAX CHAR LENGTH OF TRANSLATION ALLOWED: 4096

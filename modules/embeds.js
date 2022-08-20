@@ -35,7 +35,7 @@ const helpEmbed = new EmbedBuilder()
   .addFields(
     { name: 'Translate', value: '1. **/t <words to translate>** <language to translate from> <language to translate to> <whether to post this translation publicly> \n2. Open the **context menu** on a message to access **apps > translate**' },
     { name: 'Information', value: '**/i** to access default server and user languages' },
-    { name: 'Default Languages', value: '**/user** to set your own default language \n_**/server** if you have manage server permissions, use this to set the server language._' },
+    { name: 'Default Languages', value: '**/user** to set your own default language \n_**/server** if you have manage server permissions, use this to set the server language._ \n_**/flag** if you have manage server permissions, use this to toggle flag translations, off by default_' },
   );
 // for help command
 const link = new ActionRowBuilder()
